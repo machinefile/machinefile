@@ -130,7 +130,12 @@ func (sr *SSHRunner) CopyFile(srcPattern, dest string, isAdd bool) error {
         if sr.SshKeyPath != "" {
             scpArgs = append(scpArgs, "-i", sr.SshKeyPath)
         }
-        
+
+        // Add port if not default (scp uses -P, different from ssh's -p)
+        if sr.SshPort != "" {
+            scpArgs = append(scpArgs, "-P", sr.SshPort)
+        }
+
         // Add -p flag to preserve file attributes
         scpArgs = append(scpArgs, "-p", "-r")
         
